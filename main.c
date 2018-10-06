@@ -25,8 +25,16 @@ int main() {
     char str4[50];
     char str5[50];
 
-	while (fscanf(file, " %[^;];%[^;];%[^;];%[^;];%[^;];", str1, str2, str3, str4, str5) == 5)
-		printf("%s %s %s %s %s\n", str1, str2, str3, str4, str5);
+    for(int i = 0; i<numberLines; i++) {
+        fscanf(file, " %[^;];%[^;];%[^;];%[^;];%[^;];", str1, str2, str3, str4, str5);
+        products[i].productID = atoi(str1);
+        products[i].type = str2[0];
+        products[i].quantity = atof(str3);
+        products[i].cost = atof(str4);
+        products[i].profit = atof(str5);
+
+        printf("%s %s %s %s %s\n", str1, str2, str3, str4, str5);
+    }
 
     fclose(file);
     free(products);
