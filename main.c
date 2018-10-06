@@ -3,6 +3,7 @@
 #include <string.h>
 
 int countLines(FILE *fp);
+FILE* openFile();
 
 typedef struct product {
     int productID;
@@ -13,12 +14,7 @@ typedef struct product {
 } Product;
 
 int main() {
-    FILE *file;
-
-    if ((file = fopen("product.txt","r")) == NULL){
-        printf("Error! opening file");
-        exit(1);
-    }
+    FILE *file = openFile();
 
     int numberLines = countLines(file);
     Product *products = malloc(sizeof(Product) * numberLines);
@@ -28,13 +24,23 @@ int main() {
     char str3[50];
     char str4[50];
     char str5[50];
-    char str6[1];
 
-    while (fscanf(file, " %[^;];%[^;];%[^;];%[^;];%[^;];", str1, str2, str3, str4, str5) == 5)
-        printf("%s %s %s %s %s\n", str1, str2, str3, str4, str5);
+	while (fscanf(file, " %[^;];%[^;];%[^;];%[^;];%[^;];", str1, str2, str3, str4, str5) == 5)
+		printf("%s %s %s %s %s\n", str1, str2, str3, str4, str5);
 
     fclose(file);
     free(products);
+}
+
+FILE* openFile() {
+	FILE *file;
+
+    if ((file = fopen("product.txt","r")) == NULL){
+        printf("Error! opening file");
+        exit(1);
+    }
+
+	return file;
 }
 
 int countLines(FILE *fp) {
