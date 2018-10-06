@@ -21,6 +21,16 @@ int main() {
     int numberLines = countLines(file);
     Product *products = malloc(sizeof(Product) * numberLines);
 
+	int year = 0, month = 0;
+
+	printf("Please, enter with report year: ");
+	while(year <= 2016)
+		scanf("%d", &year);
+
+	printf("Please, enter with report month: ");
+	while(month > 12 || month <= 0)
+		scanf("%d", &month);
+
 	populateProducts(file, numberLines, products);
 	printStructs(products);
 
@@ -50,7 +60,7 @@ FILE* openFile() {
 }
 
 int countLines(FILE *fp) {
-    int count;
+    int count = 0;
     char c;
 
     for (c = getc(fp); c != EOF; c = getc(fp))
