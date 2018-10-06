@@ -1,19 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int countLines(FILE *fp);
 
-struct product {
+typedef struct product {
     int productID;
     char type;
     float quantity;
     float cost;
     float profit;
-};
+} Product;
 
 int main() {
     FILE *file;
-//    struct product input;
 
     if ((file = fopen("product.txt","r")) == NULL){
         printf("Error! opening file");
@@ -21,19 +21,20 @@ int main() {
     }
 
     int numberLines = countLines(file);
+    Product *products = malloc(sizeof(Product) * numberLines);
 
-    printf("%d", numberLines);
+    char str1[50];
+    char str2[50];
+    char str3[50];
+    char str4[50];
+    char str5[50];
+    char str6[1];
 
-/*    while(fread(&input, sizeof(struct product), 1, file)) {*/
-        /*fscanf(file, "%d", &abc);*/
-        /*printf("%d", abc);*/
-        //fscanf(file, "%d;%c;%f;%f;%f", &input.productID, &input.type, &input.quantity, &input.cost, &input.profit);
-
-    /*printf("id = %d type = %c quantity =  %f cost = %f profit = %f\n", input.productID,*/
-        /*input.type, input.quantity, input.cost, input.profit);*/
-
+    while (fscanf(file, " %[^;];%[^;];%[^;];%[^;];%[^;];", str1, str2, str3, str4, str5) == 5)
+        printf("%s %s %s %s %s\n", str1, str2, str3, str4, str5);
 
     fclose(file);
+    free(products);
 }
 
 int countLines(FILE *fp) {
@@ -42,7 +43,7 @@ int countLines(FILE *fp) {
 
     for (c = getc(fp); c != EOF; c = getc(fp))
         if (c == '\n')
-            count = count + 1;
+            count += 1;
 
     rewind(fp);
     return count;
