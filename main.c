@@ -13,6 +13,7 @@ typedef struct product {
 int countLines(FILE *fp);
 FILE* openFile();
 void populateProducts(FILE *file,int numberLines, Product *products);
+void printStructs();
 
 int main() {
     FILE *file = openFile();
@@ -21,15 +22,26 @@ int main() {
     Product *products = malloc(sizeof(Product) * numberLines);
 
 	populateProducts(file, numberLines, products);
+	printStructs(products);
 
     fclose(file);
     free(products);
 }
 
+void printStructs(Product *products) {
+	for(int i=0; i<4; i++) {
+		printf("%d | ", products[i].productID);
+		printf("%c | ", products[i].type);
+		printf("%f | ", products[i].quantity);
+		printf("%f | ", products[i].cost);
+		printf("%f | \n", products[i].profit);
+	}
+}
+
 FILE* openFile() {
 	FILE *file;
 
-    if ((file = fopen("product.txt","r")) == NULL){
+    if ((file = fopen("product.txt","r")) == NULL) {
         printf("Error! opening file");
         exit(1);
     }
@@ -56,15 +68,13 @@ void populateProducts(FILE *file, int numberLines, Product *products) {
     char str4[50];
     char str5[50];
 
-    for(int i = 1; i<numberLines; i++) {
+    for(int i = 0; i < numberLines-1; i++) {
         fscanf(file, " %[^;];%[^;];%[^;];%[^;];%[^;];", str1, str2, str3, str4, str5);
         products[i].productID = atoi(str1);
         products[i].type = str2[0];
         products[i].quantity = atof(str3);
         products[i].cost = atof(str4);
         products[i].profit = atof(str5);
-
-        printf("%s %s %s %s %s\n", str1, str2, str3, str4, str5);
     }
 }
 
