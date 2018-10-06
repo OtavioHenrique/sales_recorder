@@ -21,7 +21,7 @@ int main() {
     int numberLines = countLines(file);
     Product *products = malloc(sizeof(Product) * numberLines);
 
-	int year = 0, month = 0;
+	int year = 0, month = 0, tradesDay = 0;
 
 	printf("Please, enter with report year: ");
 	while(year <= 2016)
@@ -30,6 +30,9 @@ int main() {
 	printf("Please, enter with report month: ");
 	while(month > 12 || month <= 0)
 		scanf("%d", &month);
+
+	printf("Please, enter with trades/day quantity: ");
+	scanf("%d", &tradesDay);
 
 	populateProducts(file, numberLines, products);
 	printStructs(products);
