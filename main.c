@@ -89,7 +89,7 @@ Product findProduct(int productID, Product *products, int numberLines) {
 		product = products[i+1];
 	}
 
-	printf("Error, product %d doesn't exists on our database.", productID);
+	printf("Error, product %d doesn't exists on our database.\n", productID);
 	return product;
 }
 
@@ -100,7 +100,11 @@ void outputReport(Sale *sales, Product *products, int saleNumber, int numberLine
 		for(int sale = 0; sale < saleNumber; sale++) {
 			Product product = findProduct(sales[sale].product, products, numberLines);
 
-			fprintf(file, "%d;%d;%d;%d;%f;\n", sales[sale].year, sales[sale].month, sales[sale].day, product.productID, sales[sale].quantity);
+			if (product.productID == 0) {
+				fprintf(file, "%s %d %s\n", "Error product", sales[sale].product, "doesn't exists");
+			} else {
+				fprintf(file, "%d;%d;%d;%d;%f;\n", sales[sale].year, sales[sale].month, sales[sale].day, product.productID, sales[sale].quantity);
+			}
 		}
 	}
 
