@@ -23,6 +23,10 @@ FILE* openFile();
 void populateProducts(FILE *file,int numberLines, Product *products);
 void printStructs();
 void registrySale(Sale *sales, int saleNumber,int year, int month, int day, int product, float quantity);
+void outputReport(Sale *sales, Product *products, int saleNumber, int numberLines);
+Product findProduct(int productID, Product *products, int numberLines);
+
+int monthDays = 2;
 
 int main() {
     FILE *file = openFile();
@@ -44,10 +48,10 @@ int main() {
 	printf("Please, enter with sales/day quantity: ");
 	scanf("%d", &salesDay);
 
-	Sale *sales = malloc(sizeof(Sale) * (30 * salesDay));
+	Sale *sales = malloc(sizeof(Sale) * (monthDays * salesDay));
 	int saleNumber = 0;
 
-	for(int day = 1; day < 30; day++) {
+	for(int day = 1; day < monthDays; day++) {
 		printf("Sales of %d/%d/%d\n\n", year, month, day);
 
 		for(int sale = 0; sale < salesDay; sale++) {
@@ -67,11 +71,40 @@ int main() {
 		}
 	}
 
-	printStructs(products);
+	outputReport(sales, products, saleNumber, numberLines);
+	/*printStructs(products);*/
 
     fclose(file);
     free(products);
 	free(sales);
+}
+
+Product findProduct(int productID, Product *products, int numberLines) {
+	Product product = products[0];
+
+	for(size_t i = 0; i <= numberLines; i++) {
+		if(product.productID == productID)
+			return product;
+
+		product = products[i+1];
+	}
+
+	printf("Error, product %d doesn't exists on our database.", productID);
+	return product;
+}
+
+void outputReport(Sale *sales, Product *products, int saleNumber, int numberLines) {
+	FILE *file = fopen("final_report.csv", "w+");
+
+	for(int day = 1; day < monthDays; day++) {
+		for(int sale = 0; sale < saleNumber; sale++) {
+			Product product = findProduct(sales[sale].product, products, numberLines);
+
+			fprintf(file, "%d;%d;%d;%d;%f;\n", sales[sale].year, sales[sale].month, sales[sale].day, product.productID, sales[sale].quantity);
+		}
+	}
+
+	fclose(file);
 }
 
 void registrySale(Sale *sales, int saleNumber, int year, int month, int day, int product, float quantity) {
@@ -131,4 +164,3 @@ void populateProducts(FILE *file, int numberLines, Product *products) {
         products[i].profit = atof(str5);
     }
 }
-
