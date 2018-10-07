@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 typedef struct sale {
 	int year;
@@ -117,6 +118,16 @@ void outputReport(Sale *sales, Product *products, int saleNumber, int numberLine
 
 float finalPrice(Product product) {
 	float price = product.cost * ((product.profit / 100) + 1 );
+
+	srand(time(NULL));
+
+	if ((rand() % 10 + 1) <= 30) {
+		if ((rand() % 2 + 1) == 1) {
+			price *= 1.3;
+		} else {
+			price -= (price * 0.3);
+		}
+	}
 
 	return price;
 }
