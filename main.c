@@ -25,6 +25,7 @@ void printStructs();
 void registrySale(Sale *sales, int saleNumber,int year, int month, int day, int product, float quantity);
 void outputReport(Sale *sales, Product *products, int saleNumber, int numberLines);
 Product findProduct(int productID, Product *products, int numberLines);
+float finalPrice(Product product);
 
 int monthDays = 2;
 
@@ -103,12 +104,21 @@ void outputReport(Sale *sales, Product *products, int saleNumber, int numberLine
 			if (product.productID == 0) {
 				fprintf(file, "%s %d %s\n", "Error product", sales[sale].product, "doesn't exists");
 			} else {
-				fprintf(file, "%d;%d;%d;%d;%f;\n", sales[sale].year, sales[sale].month, sales[sale].day, product.productID, sales[sale].quantity);
+				float price = finalPrice(product);
+
+				fprintf(file, "%d;%d;%d;%d;%.4f;%.2f\n", sales[sale].year, sales[sale].month,
+					sales[sale].day, product.productID, sales[sale].quantity, price);
 			}
 		}
 	}
 
 	fclose(file);
+}
+
+float finalPrice(Product product) {
+	float price = product.cost * ((product.profit / 100) + 1 );
+
+	return price;
 }
 
 void registrySale(Sale *sales, int saleNumber, int year, int month, int day, int product, float quantity) {
