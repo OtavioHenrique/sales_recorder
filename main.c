@@ -92,6 +92,7 @@ Product findProduct(int productID, Product *products, int numberLines) {
 	}
 
 	printf("Error, product %d doesn't exists on our database.\n", productID);
+	product.productID = 0; //product with 0 ID is a null product
 	return product;
 }
 
