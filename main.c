@@ -2,6 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef struct sale {
+	int year;
+	int month;
+	int day;
+	int product;
+	float quantity;
+} Sale;
+
 typedef struct product {
     int productID;
     char type;
@@ -14,14 +22,16 @@ int countLines(FILE *fp);
 FILE* openFile();
 void populateProducts(FILE *file,int numberLines, Product *products);
 void printStructs();
+void registrySale(Sale *sales, int saleNumber,int year, int month, int day, int product, float quantity);
 
 int main() {
     FILE *file = openFile();
 
     int numberLines = countLines(file);
     Product *products = malloc(sizeof(Product) * numberLines);
+	populateProducts(file, numberLines, products);
 
-	int year = 0, month = 0, tradesDay = 0;
+	int year = 0, month = 0, salesDay = 0;
 
 	printf("Please, enter with report year: ");
 	while(year <= 2016)
@@ -31,14 +41,45 @@ int main() {
 	while(month > 12 || month <= 0)
 		scanf("%d", &month);
 
-	printf("Please, enter with trades/day quantity: ");
-	scanf("%d", &tradesDay);
+	printf("Please, enter with sales/day quantity: ");
+	scanf("%d", &salesDay);
 
-	populateProducts(file, numberLines, products);
+	Sale *sales = malloc(sizeof(Sale) * (30 * salesDay));
+	int saleNumber = 0;
+
+	for(int day = 1; day < 30; day++) {
+		printf("Sales of %d/%d/%d\n\n", year, month, day);
+
+		for(int sale = 0; sale < salesDay; sale++) {
+			int product;
+			float quantity;
+
+			printf("Sale n %d\n", sale+1);
+
+			printf("Product ID: ");
+			scanf("%d", &product);
+
+			printf("Quantity: ");
+			scanf("%f", &quantity);
+
+			registrySale(sales, saleNumber, year, month, day, product, quantity);
+			saleNumber++;
+		}
+	}
+
 	printStructs(products);
 
     fclose(file);
     free(products);
+	free(sales);
+}
+
+void registrySale(Sale *sales, int saleNumber, int year, int month, int day, int product, float quantity) {
+	sales[saleNumber].product = product;
+	sales[saleNumber].quantity = quantity;
+    sales[saleNumber].year = year;
+	sales[saleNumber].month = month;
+	sales[saleNumber].day = day;
 }
 
 void printStructs(Product *products) {
