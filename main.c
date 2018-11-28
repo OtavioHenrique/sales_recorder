@@ -4,11 +4,11 @@
 #include <time.h>
 
 typedef struct sale {
-	int year;
-	int month;
-	int day;
-	int product;
-	float quantity;
+    int year;
+    int month;
+    int day;
+    int product;
+    float quantity;
 } Sale;
 
 typedef struct product {
@@ -35,60 +35,60 @@ int main() {
 
     int numberLines = countLines(file);
     Product *products = malloc(sizeof(Product) * numberLines);
-	populateProducts(file, numberLines, products);
+    populateProducts(file, numberLines, products);
 
-	int year = 0, month = 0, salesDay = 0;
+    int year = 0, month = 0, salesDay = 0;
 
-	printf("Please, enter with report year: ");
-	while(year <= 2016)
-		scanf("%d", &year);
+    printf("Please, enter with report year: ");
+    while(year <= 2016)
+    	scanf("%d", &year);
 
-	printf("Please, enter with report month: ");
-	while(month > 12 || month <= 0)
-		scanf("%d", &month);
+    printf("Please, enter with report month: ");
+    while(month > 12 || month <= 0)
+    	scanf("%d", &month);
 
-	printf("Please, enter with sales/day quantity: ");
-	scanf("%d", &salesDay);
+    printf("Please, enter with sales/day quantity: ");
+    scanf("%d", &salesDay);
 
-	Sale *sales = malloc(sizeof(Sale) * (monthDays * salesDay));
-	int saleNumber = 0;
+    Sale *sales = malloc(sizeof(Sale) * (monthDays * salesDay));
+    int saleNumber = 0;
 
-	for(int day = 1; day < monthDays; day++) {
-		printf("Sales of %d/%d/%d\n\n", year, month, day);
+    for(int day = 1; day < monthDays; day++) {
+        printf("Sales of %d/%d/%d\n\n", year, month, day);
 
-		for(int sale = 0; sale < salesDay; sale++) {
-			int product;
-			float quantity;
+	for(int sale = 0; sale < salesDay; sale++) {
+	    int product;
+	    float quantity;
 
-			printf("Sale n %d\n", sale+1);
+	    printf("Sale n %d\n", sale+1);
 
-			printf("Product ID: ");
-			scanf("%d", &product);
+	    printf("Product ID: ");
+	    scanf("%d", &product);
 
-			printf("Quantity: ");
-			scanf("%f", &quantity);
+	    printf("Quantity: ");
+	    scanf("%f", &quantity);
 
-			registrySale(sales, saleNumber, year, month, day, product, quantity);
-			saleNumber++;
-		}
-	}
+	    registrySale(sales, saleNumber, year, month, day, product, quantity);
+	    saleNumber++;
+        }
+    }
 
-	outputReport(sales, products, saleNumber, numberLines);
-	/*printStructs(products);*/
+    outputReport(sales, products, saleNumber, numberLines);
 
     fclose(file);
     free(products);
-	free(sales);
+    free(sales);
 }
 
 Product findProduct(int productID, Product *products, int numberLines) {
 	Product product = products[0];
 
 	for(size_t i = 0; i <= numberLines; i++) {
-		if(product.productID == productID)
-			return product;
+	    if(product.productID == productID) {
+	        return product;
 
 		product = products[i+1];
+            }
 	}
 
 	printf("Error, product %d doesn't exists on our database.\n", productID);
@@ -154,7 +154,7 @@ void printStructs(Product *products) {
 FILE* openFile() {
 	FILE *file;
 
-    if ((file = fopen("product.txt","r")) == NULL) {
+    if ((file = fopen("PRODUTOS.txt","r")) == NULL) {
         printf("Error! opening file");
         exit(1);
     }
